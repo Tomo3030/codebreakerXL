@@ -1,0 +1,32 @@
+<app-spinner top="200px" *ngIf="loading"></app-spinner>
+
+<div class="background">
+  <div class="text">
+    <h2 class="title">Pick an Option</h2>
+    <p>
+      <strong>Talk with your partner and decide!</strong> One person should
+      'Create A Game', the other person should 'Join A Game'.
+    </p>
+  </div>
+  <div class="buttons">
+    <button
+      color="accent"
+      class="button"
+      mat-raised-button
+      (click)="createGame()"
+    >
+      Create A Game
+    </button>
+
+    <div>
+      <a
+        color="accent"
+        routerLink="gameselect/join"
+        class="button"
+        mat-raised-button
+      >
+        Join A Game
+      </a>
+    </div>
+  </div>
+</div>

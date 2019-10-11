@@ -1,0 +1,25 @@
+.center {
+  text-align: center;
+}
+
+.instructions {
+  //   font-family: "Roboto Condensed", sans-serif;
+  font-size: 1.4em;
+  padding: 10px;
+  margin-left: 6%;
+}
+
+.pin {
+  font-size: 4em;
+  font-family: "Montserrat", sans-serif;
+  letter-spacing: 5px;
+  font-weight: 500;
+  //font-family: "Rubik Mono One", sans-serif;
+}
+
+.card {
+  display: inline-block;
+  border: 3px orange solid;
+  padding: 5px;
+  width: 85%;
+}

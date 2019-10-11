@@ -1,0 +1,12 @@
+<app-display-info
+  [score]="score"
+  (timerFinished)="timeOver()"
+></app-display-info>
+<div class="outer">
+  <div class="code">
+    <span class="point" [class.point-animate]="addPoint">1+</span>
+    <div *ngFor="let e of currentDisplayArray" class="emoji">
+      {{ e }}
+    </div>
+  </div>
+</div>

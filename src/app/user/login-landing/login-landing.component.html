@@ -1,0 +1,14 @@
+<app-spinner *ngIf="loading" top="120px"></app-spinner>
+<div *ngIf="!(user | async)">
+  <app-login
+    *ngIf="toggleLogin"
+    (toggle)="toggleLanding()"
+    (toggleLoading)="toggleLoading()"
+  ></app-login>
+  <app-create-account
+    (toggle)="toggleLanding()"
+    *ngIf="!toggleLogin"
+    (toggleLoading)="toggleLoading()"
+  ></app-create-account>
+</div>
+<app-already-signed-in *ngIf="user | async"></app-already-signed-in>

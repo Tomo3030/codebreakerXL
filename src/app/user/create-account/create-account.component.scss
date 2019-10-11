@@ -1,0 +1,33 @@
+.header {
+  margin-left: 6%;
+}
+
+.card {
+  width: 85%;
+  margin: 15px auto;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.button-container {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.button {
+  padding: 7px;
+  width: 300px;
+  font-size: 1.1em;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.server-error {
+  font-size: 1.1em;
+}

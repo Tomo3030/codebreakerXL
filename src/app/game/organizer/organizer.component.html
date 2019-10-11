@@ -1,0 +1,42 @@
+<div class="outer">
+  <div
+    #answerList="cdkDropList"
+    cdkDropList
+    cdkDropListOrientation="horizontal"
+    [cdkDropListData]="answerArray"
+    (cdkDropListDropped)="onDrop($event)"
+    [cdkDropListConnectedTo]="currentDisplay"
+    class="code"
+    [class.shake]="shake"
+  >
+    <span class="point" [class.point-animate]="addPoint">1+</span>
+    <div *ngFor="let e of answerArray" cdkDrag class="emoji">
+      {{ e }}
+    </div>
+  </div>
+
+  <div
+    #currentDisplay="cdkDropList"
+    cdkDropList
+    cdkDropListOrientation="horizontal"
+    [cdkDropListData]="currentDisplayArray"
+    (cdkDropListDropped)="onDrop($event)"
+    [cdkDropListConnectedTo]="answerList"
+    class="emoji-holder"
+  >
+    <div *ngFor="let e of currentDisplayArray" cdkDrag class="emoji">
+      {{ e }}
+    </div>
+  </div>
+  <div>
+    <button
+      class="submit-button"
+      *ngIf="answerArray.length > 4"
+      mat-raised-button
+      color="accent"
+      (click)="submit()"
+    >
+      Submit
+    </button>
+  </div>
+</div>
