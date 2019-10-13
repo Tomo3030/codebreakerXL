@@ -40,24 +40,12 @@ export class EmojiService {
       .valueChanges();
   }
 
-  postDataToDb(emojiList, round, gameId) {
-    let emojiRound = round === "round 1" ? "emojiList" : "emojiList2";
-    console.log(emojiRound);
+  postDataToDb(emojiList, gameId) {
     return this.afs
       .collection("games")
       .doc(gameId)
       .update({
-        [emojiRound]: emojiList
-      });
-  }
-
-  clearEmojiList(gameId) {
-    return this.afs
-      .collection("games")
-      .doc(gameId)
-      .update({
-        emojiList: firebase.firestore.FieldValue.delete(),
-        emojiList2: firebase.firestore.FieldValue.delete()
+        emojiList: emojiList
       });
   }
 }

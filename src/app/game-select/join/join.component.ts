@@ -2,6 +2,7 @@ import { MembersDialogComponent } from "./../dialogs/members-dialog.component";
 import { GameService } from "./../game.service";
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { MatDialog, MatSnackBar } from "@angular/material";
+import { take } from "rxjs/operators";
 
 @Component({
   selector: "app-join",
@@ -35,6 +36,7 @@ export class JoinComponent implements OnInit, OnDestroy {
     this.spinner = true;
     this.gameSubscription = this.gameService
       .getGame(this.pinned.toString())
+      .pipe(take(1))
       .subscribe(game => {
         if (game && !game.joiner) {
           console.log("game exists");
@@ -48,11 +50,11 @@ export class JoinComponent implements OnInit, OnDestroy {
             gameId: this.pinned,
             creator: false
           };
-          this.openDialog(data);
+          return this.openDialog(data);
         } else if (game && game.joiner) {
           this.spinner = false;
           this.openSnack("This game already has 2 players");
-          this.wrongPin();
+          return this.wrongPin();
         } else {
           this.spinner = false;
           this.openSnack();

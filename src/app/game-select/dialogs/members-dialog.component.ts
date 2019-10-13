@@ -92,7 +92,7 @@ export class MembersDialogComponent implements OnInit {
     console.log(this.data.name);
     this.dialogRef.close();
     if (this.data.creator)
-      this.router.navigate(["/game/speaker/round%201" + this.data.gameId]);
-    else this.router.navigate(["/game/organizer/round%201" + this.data.gameId]);
+      this.router.navigate(["/game/speaker/round 1/" + this.data.gameId]);
+    else this.router.navigate(["/game/organizer/round 1/" + this.data.gameId]);
   }
 }

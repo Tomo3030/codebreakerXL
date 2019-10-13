@@ -12,19 +12,17 @@ const routes: Routes = [
       import("./game-select/game-select.module").then(m => m.GameSelectModule)
   },
   {
-    path: "gameroom",
-    loadChildren: () =>
-      import("./gameroom/gameroom.module").then(m => m.GameroomModule)
+    path: "game",
+    loadChildren: () => import("./game/game.module").then(m => m.GameModule)
   },
   {
-    path: "game",
-    loadChildren: () => import("./game/game.module").then(m => m.GameModule),
-    runGuardsAndResolvers: "paramsChange"
+    path: "score",
+    loadChildren: () => import("./score/score.module").then(m => m.ScoreModule)
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

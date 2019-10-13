@@ -6,6 +6,7 @@
     [cdkDropListData]="answerArray"
     (cdkDropListDropped)="onDrop($event)"
     [cdkDropListConnectedTo]="currentDisplay"
+    [class.align]="answerArray.length > 4"
     class="code"
     [class.shake]="shake"
   >

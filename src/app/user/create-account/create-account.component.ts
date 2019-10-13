@@ -47,6 +47,7 @@ export class CreateAccountComponent implements OnInit {
         this.toggleLoading.emit();
       })
       .catch(error => {
+        this.toggleLoading.emit();
         this.serverMessage = error;
       });
   }

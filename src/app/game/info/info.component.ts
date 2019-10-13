@@ -21,7 +21,7 @@ export class InfoComponent implements OnInit {
   }
 
   startTimer() {
-    this.timeRemaining = 250;
+    this.timeRemaining = 120;
     this.blink = false;
     const source = timer(0, 1000);
     this.timeSubscription = source.subscribe(() => {

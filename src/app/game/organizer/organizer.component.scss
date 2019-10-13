@@ -5,12 +5,12 @@
 .code {
   margin-top: 15px;
   width: 90%;
-  height: 15%;
+  height: 110px;
   display: inline-flex;
   border-radius: 12px;
   background-color: lighten(black, 30%);
   align-items: center;
-  justify-content: space-evenly;
+
   border: 2px Orange solid;
 }
 
@@ -25,21 +25,22 @@
 }
 
 .submit-button {
-  font-family: "Changa", sans-serif;
+  font-family: "Share Tech Mono", monospace;
   margin: 15px;
   width: 200px;
   padding: 15px;
-  font-size: 1.2em;
-  color: white;
+  font-size: 1.4em;
+  //color: white;
   text-transform: uppercase;
   animation: fadein 2s;
 }
 
+.align {
+  justify-content: space-evenly;
+}
+
 .shake {
   animation: shake 0.4s linear;
-  // outline: none
-  // border-color: $my-pink
-  // box-shadow: 0 0 3px $my-pink
 }
 
 .point {

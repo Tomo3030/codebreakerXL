@@ -6,6 +6,7 @@ import { ActivatedRoute } from "@angular/router";
 import { Observable } from "rxjs";
 import { MembersDialogComponent } from "../dialogs/members-dialog.component";
 import { MatDialog } from "@angular/material";
+import { take } from "rxjs/operators";
 
 @Component({
   selector: "app-create",
@@ -26,6 +27,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     this.gameId = this.activatedRoute.snapshot.paramMap.get("gameId");
     this.gameSubscription = this.gameService
       .getGame(this.gameId)
+      .pipe(take(2))
       .subscribe(gameInfo => {
         console.log(gameInfo);
         if (gameInfo.joiner) {

@@ -1,0 +1,44 @@
+.full {
+  padding: 20px;
+  text-align: center;
+  font-family: "Roboto Condensed", sans-serif;
+}
+
+.header {
+  font-size: 6em;
+  text-transform: uppercase;
+  background: orange;
+  color: white;
+  width: 70%;
+  margin: 20px auto;
+  text-align: center;
+  font-weight: 700;
+}
+
+.card {
+  width: 90%;
+  margin: auto;
+}
+.score-display {
+  font-size: 2em;
+  list-style: none;
+  width: 90%;
+  margin: auto;
+  padding-inline-start: 0;
+  cursor: pointer;
+}
+.icon {
+  font-size: 1.4em;
+  float: left;
+  font-weight: bold;
+  color: red;
+  cursor: pointer;
+  //margin-left: -70px
+}
+.score {
+  display: flex;
+  justify-content: space-between;
+}
+.line {
+  margin: 18px;
+}

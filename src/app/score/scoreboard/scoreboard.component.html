@@ -1,0 +1,20 @@
+<div class="full">
+  <div class="header">High Score</div>
+  <mat-card class="card">
+    <ul
+      *ngFor="let score of sortedScore; index as i; last as last"
+      class="score-display"
+    >
+      <li>
+        <i (click)="delete(i)" *ngIf="show === i" class="material-icons icon">
+          close
+        </i>
+        <div (click)="clicked(i, $event)" class="score">
+          <span>{{ score.name }}</span>
+          <span>{{ score.score }}</span>
+        </div>
+      </li>
+      <hr class="line" width="100%" />
+    </ul>
+  </mat-card>
+</div>

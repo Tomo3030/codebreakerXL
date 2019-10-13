@@ -29,6 +29,7 @@ import { EmojiService } from "../shared/emoji.service";
       >
         Play Round 2!
       </button>
+
       <div>
         <button
           *ngIf="data.round == 'round 2'"
@@ -46,6 +47,7 @@ import { EmojiService } from "../shared/emoji.service";
         color="accent"
         class="button"
         mat-raised-button
+        (click)="quit()"
       >
         Quit
       </button>
@@ -89,6 +91,7 @@ import { EmojiService } from "../shared/emoji.service";
   ]
 })
 export class EndDialogComponent implements OnInit {
+  clickable = true;
   constructor(
     private emojiService: EmojiService,
     private router: Router,
@@ -99,31 +102,34 @@ export class EndDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("laod");
+    console.log(this.data);
     this.changePosition();
-    if (this.data.round === "round 2") {
-      //we need to clear database emojiLists
-      this.emojiService.clearEmojiList(this.data.gameId);
-    }
   }
 
   goToRound(round) {
-    console.log(round);
-    const newRole = this.data.role === "organizer" ? "speaker" : "organizer";
-    if (newRole === "speaker") {
-      const emojiList = this.emojiService.makeEmojiList(100);
-      this.emojiService
-        .postDataToDb(emojiList, round, this.data.gameId)
-        .then(() =>
-          this.router.navigateByUrl(
-            "/game/" + newRole + "/" + round + "/" + this.data.gameId
-          )
+    if (this.clickable) {
+      this.clickable = false;
+      const newRole = this.data.role === "organizer" ? "speaker" : "organizer";
+      if (newRole === "speaker") {
+        const emojiList = this.emojiService.makeEmojiList(100);
+        this.emojiService
+          .postDataToDb(emojiList, this.data.gameId)
+          .then(() =>
+            this.router.navigateByUrl(
+              "/game/" + newRole + "/" + round + "/" + this.data.gameId
+            )
+          );
+      } else {
+        this.router.navigateByUrl(
+          "/game/" + newRole + "/" + round + "/" + this.data.gameId
         );
-    } else {
-      this.router.navigateByUrl(
-        "/game/" + newRole + "/" + round + "/" + this.data.gameId
-      );
+      }
+      this.dialogRef.close();
     }
+  }
+
+  quit() {
+    this.router.navigateByUrl("/gameselect");
     this.dialogRef.close();
   }
 

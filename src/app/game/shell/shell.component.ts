@@ -1,12 +1,12 @@
 import { GameService } from "./../game.service";
-import { gameData } from "./../../shared/gameData";
 import { EmojiService } from "./../../shared/emoji.service";
-import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Component, OnInit, ViewChild, OnDestroy } from "@angular/core";
 import { MatDialog } from "@angular/material";
 import { EndDialogComponent } from "../end-dialog.component";
 import { InfoComponent } from "../info/info.component";
-import { take, switchMap } from "rxjs/operators";
+import { Observable, BehaviorSubject, combineLatest } from "rxjs";
+import { take } from "rxjs/operators";
 
 @Component({
   selector: "app-shell",
@@ -17,19 +17,26 @@ export class ShellComponent implements OnInit, OnDestroy {
   @ViewChild(InfoComponent)
   private infoComponent: InfoComponent;
   firstLoad;
-  show;
-  spinner;
+  show = false;
+  spinner = true;
   role;
   gameId;
   round;
   score = 0;
   addPoint;
   shake;
-  fullEmojiList = [];
+  emojiList = [];
+  emojiListCopy = [];
   currentDisplayArray = [];
   answerArray = [];
   correctAnswer = [];
   subscription;
+  player;
+
+  __ready: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  ready$: Observable<boolean> = this.__ready.asObservable();
+  __onPage: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  onPage$: Observable<boolean> = this.__onPage.asObservable();
   constructor(
     private activatedRoute: ActivatedRoute,
     private emojiService: EmojiService,
@@ -43,65 +50,55 @@ export class ShellComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log("ngOnInit");
+    combineLatest(this.ready$, this.onPage$).subscribe(([x, y]) => {
+      if (x && y) {
+        console.log("2");
+        this.gameService.playerReady(this.gameId, this.player);
+        this.__onPage.next(false);
+        this.__ready.next(false);
+      }
+    });
 
-    this.subscription = this.activatedRoute.paramMap
-      .pipe(
-        switchMap(params => {
-          this.gameId = params.get("gameId");
-          this.role = params.get("role");
-          this.round = params.get("round");
-          if (this.gameService && this.round && this.round) {
-            console.log("ok");
-            this.spinner = true;
-            this.firstLoad = true;
-            this.show = false;
-          }
-          return this.emojiService.getGame(this.gameId);
-        })
-      )
+    this.activatedRoute.paramMap.subscribe(params => {
+      this.gameId = params.get("gameId");
+      this.role = params.get("role");
+      this.round = params.get("round");
+      console.log(this.gameId, this.role, this.round);
+      if (this.gameId && this.role && this.round) {
+        this.__onPage.next(true);
+      }
+    });
+    this.player = this.role === "speaker" ? "p1" : "p2";
+
+    this.subscription = this.emojiService
+      .getGame(this.gameId)
       .subscribe(gameData => {
-        console.log("dokey");
-        if (
-          !this.fullEmojiList.length &&
-          this.activatedRoute.snapshot.paramMap.get("round") === "round 1"
-        ) {
-          this.fullEmojiList = gameData.emojiList;
-          console.log(this.fullEmojiList);
-        }
-        console.log(this.activatedRoute.snapshot.paramMap.get("round"));
-        console.log(this.fullEmojiList.length);
-        if (
-          !this.fullEmojiList.length &&
-          this.activatedRoute.snapshot.paramMap.get("round") === "round 2"
-        ) {
-          console.log("we need this emojiList to load");
-          this.fullEmojiList = gameData.emojiList2;
-        }
-
-        if (this.firstLoad) {
+        if (this.needNewEmojiArray(gameData.emojiList)) {
+          this.emojiList = gameData.emojiList;
+          console.log(this.emojiList);
+          this.emojiListCopy = [...this.emojiList];
           this.correctAnswer = this.getNewDisplayArray();
           this.currentDisplayArray = this.randomizeArray(this.correctAnswer);
-          this.gameService.playerReady(this.gameId, this.role);
+          this.__ready.next(true);
           this.score = gameData.score;
-          this.firstLoad = false;
         }
-        if (gameData.score && this.score !== gameData.score) {
+        if (this.score !== gameData.score) {
           this.score = gameData.score;
           this.handlePointAnimation();
           this.correctAnswer = this.getNewDisplayArray();
         }
-        if (gameData.speaker && gameData.organizer) {
+        if (gameData.p1 === true && gameData.p2 === true) {
+          console.log("must be 4");
           this.show = true;
           this.spinner = false;
           this.infoComponent.startTimer();
-          this.gameService.playerNotReady(this.gameId, this.role);
+          this.gameService.playerNotReady(this.gameId, this.player);
         }
       });
   }
 
   getNewDisplayArray() {
-    return this.fullEmojiList.splice(0, 5);
+    return this.emojiListCopy.splice(0, 5);
   }
 
   addRandomEmoji(number) {}
@@ -127,17 +124,6 @@ export class ShellComponent implements OnInit, OnDestroy {
     }, 2000);
   }
 
-  roleSwitch() {
-    if (this.role === "organizer") {
-      return (this.role = "speaker");
-    }
-    if (this.role === "speaker") {
-      return (this.role = "organizer");
-    }
-
-    console.log(this.role);
-  }
-
   timeUp() {
     this.dialog.open(EndDialogComponent, {
       data: {
@@ -147,9 +133,8 @@ export class ShellComponent implements OnInit, OnDestroy {
         gameId: this.gameId
       }
     });
-    this.dialog.afterAllClosed.pipe(take(1)).subscribe(() => {
-      this.fullEmojiList = [];
-    });
+    this.spinner = true;
+    this.show = false;
   }
 
   submitAnswer() {
@@ -172,5 +157,16 @@ export class ShellComponent implements OnInit, OnDestroy {
 
   stopTimer() {
     this.infoComponent.stopTimer();
+  }
+
+  needNewEmojiArray(emojiArray) {
+    //if full emojiList is empty need new emoji Array
+    if (!this.emojiList.length) {
+      return true;
+    }
+    //if emoji list is same we don't need emoji list
+    return !this.emojiList.every((emoji, i) => {
+      return emoji == emojiArray[i];
+    });
   }
 }

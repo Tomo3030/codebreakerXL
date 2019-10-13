@@ -14,13 +14,14 @@ export class OrganizerComponent implements OnInit {
   @Input() currentDisplayArray;
   @Input() addPoint;
   @Input() shake;
-  //answerArray = [];
   @Input() answerArray;
   @Output() submitAnswer = new EventEmitter();
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    //this.answerArray = [""];
+  }
 
   onDrop(e: CdkDragDrop<string[]>) {
     if (e.previousContainer !== e.container) {
