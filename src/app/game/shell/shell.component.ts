@@ -6,7 +6,6 @@ import { MatDialog } from "@angular/material";
 import { EndDialogComponent } from "../end-dialog.component";
 import { InfoComponent } from "../info/info.component";
 import { Observable, BehaviorSubject, combineLatest } from "rxjs";
-import { take } from "rxjs/operators";
 
 @Component({
   selector: "app-shell",
@@ -14,7 +13,7 @@ import { take } from "rxjs/operators";
   styleUrls: ["./shell.component.scss"]
 })
 export class ShellComponent implements OnInit, OnDestroy {
-  @ViewChild(InfoComponent)
+  @ViewChild(InfoComponent, { static: true })
   private infoComponent: InfoComponent;
   firstLoad;
   show = false;
@@ -23,6 +22,7 @@ export class ShellComponent implements OnInit, OnDestroy {
   gameId;
   round;
   score = 0;
+  roundProgress = 0;
   addPoint;
   shake;
   emojiList = [];
@@ -52,7 +52,6 @@ export class ShellComponent implements OnInit, OnDestroy {
   ngOnInit() {
     combineLatest(this.ready$, this.onPage$).subscribe(([x, y]) => {
       if (x && y) {
-        console.log("2");
         this.gameService.playerReady(this.gameId, this.player);
         this.__onPage.next(false);
         this.__ready.next(false);
@@ -63,7 +62,6 @@ export class ShellComponent implements OnInit, OnDestroy {
       this.gameId = params.get("gameId");
       this.role = params.get("role");
       this.round = params.get("round");
-      console.log(this.gameId, this.role, this.round);
       if (this.gameId && this.role && this.round) {
         this.__onPage.next(true);
       }
@@ -74,10 +72,11 @@ export class ShellComponent implements OnInit, OnDestroy {
       .getGame(this.gameId)
       .subscribe(gameData => {
         if (this.needNewEmojiArray(gameData.emojiList)) {
+          this.answerArray = [];
           this.emojiList = gameData.emojiList;
-          console.log(this.emojiList);
           this.emojiListCopy = [...this.emojiList];
           this.correctAnswer = this.getNewDisplayArray();
+          this.answerArray = [];
           this.currentDisplayArray = this.randomizeArray(this.correctAnswer);
           this.__ready.next(true);
           this.score = gameData.score;
@@ -88,7 +87,6 @@ export class ShellComponent implements OnInit, OnDestroy {
           this.correctAnswer = this.getNewDisplayArray();
         }
         if (gameData.p1 === true && gameData.p2 === true) {
-          console.log("must be 4");
           this.show = true;
           this.spinner = false;
           this.infoComponent.startTimer();
@@ -135,6 +133,7 @@ export class ShellComponent implements OnInit, OnDestroy {
     });
     this.spinner = true;
     this.show = false;
+    this.roundProgress = 0;
   }
 
   submitAnswer() {
@@ -144,13 +143,21 @@ export class ShellComponent implements OnInit, OnDestroy {
     if (answer) {
       this.handlePointAnimation();
       this.score++;
+      this.roundProgress < 10
+        ? this.roundProgress++
+        : (this.roundProgress = 10);
       this.gameService.sendScoreToDb(this.gameId, this.score);
       this.correctAnswer = this.getNewDisplayArray();
-      this.currentDisplayArray = this.randomizeArray(this.correctAnswer);
+      const randoEmoji = this.emojiService.makeEmojiList(this.roundProgress);
+      this.currentDisplayArray = this.randomizeArray(
+        this.correctAnswer.concat(randoEmoji)
+      );
       this.answerArray = [];
     } else {
       this.handleShakeAnimation();
-      this.currentDisplayArray = this.randomizeArray(this.correctAnswer);
+      this.currentDisplayArray = this.randomizeArray(
+        this.currentDisplayArray.concat(this.answerArray)
+      );
       this.answerArray = [];
     }
   }

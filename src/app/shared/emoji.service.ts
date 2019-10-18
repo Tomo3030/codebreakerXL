@@ -1,37 +1,36 @@
-import firebase from "firebase";
 import { gameData } from "./gameData";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { Injectable } from "@angular/core";
 import emoji from "../../app/shared/emoji.json";
-import { take } from "rxjs/operators";
 import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root"
 })
 export class EmojiService {
-  public emojiList: string[] = [];
+  //public emojiList: string[] = [];
   constructor(private afs: AngularFirestore) {}
 
   makeEmojiList(number) {
     const fullEmojiList = emoji;
+    const emojiList = [];
     do {
       let x =
         fullEmojiList.emojis[
           Math.floor(Math.random() * fullEmojiList.emojis.length)
         ].emoji;
-      this.emojiList.push(x);
-    } while (this.emojiList.length < number);
-    return this.emojiList;
+      emojiList.push(x);
+    } while (emojiList.length < number);
+    return emojiList;
   }
 
-  getEmojiListFromServer(gameId) {
-    this.getGame(gameId)
-      .pipe(take(1))
-      .subscribe(gameDetails => {
-        this.emojiList = gameDetails.emojiList;
-      });
-  }
+  // getEmojiListFromServer(gameId) {
+  //   this.getGame(gameId)
+  //     .pipe(take(1))
+  //     .subscribe(gameDetails => {
+  //       this.emojiList = gameDetails.emojiList;
+  //     });
+  // }
 
   getGame(gameId): Observable<gameData> {
     return this.afs
@@ -47,5 +46,12 @@ export class EmojiService {
       .update({
         emojiList: emojiList
       });
+  }
+
+  deleteScore(gameId) {
+    return this.afs
+      .collection("games")
+      .doc(gameId)
+      .update({ score: 0 });
   }
 }

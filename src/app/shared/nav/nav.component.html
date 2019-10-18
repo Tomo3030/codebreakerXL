@@ -1,23 +1,54 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav">
-    <mat-toolbar>Menu</mat-toolbar>
+  <mat-sidenav #drawer class="sidenav" position="end">
+    <mat-toolbar>
+      <div *ngIf="user$ | async as user">
+        <!-- <span class="circle">{{ user.displayName.charAt(0) }}</span> -->
+        <span class="email">{{ user.email }}</span>
+      </div>
+      <span class="email" *ngIf="!(user$ | async)">Not Logged In</span>
+    </mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item href="#" (click)="drawer.toggle()">Link 1</a>
-      <a mat-list-item href="#" (click)="drawer.toggle()">Link 2</a>
-      <a mat-list-item href="#" (click)="drawer.toggle()">Link 3</a>
+      <button
+        *ngIf="user$ | async"
+        mat-list-item
+        (click)="signOut()"
+        (click)="drawer.toggle()"
+      >
+        Sign Out
+      </button>
+      <a
+        *ngIf="!(user$ | async)"
+        mat-list-item
+        routerLink="/"
+        (click)="drawer.toggle()"
+      >
+        Sign In
+      </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
+      <span class="title">Codebreaker </span><span class="xl"> XL</span>
+      <span class="spacer"></span>
       <button
         type="button"
         aria-label="Toggle sidenav"
         mat-icon-button
         (click)="drawer.toggle()"
       >
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        <mat-icon
+          *ngIf="!(user$ | async)"
+          class="icon"
+          aria-label="Side nav toggle icon"
+          >person_add_disabled</mat-icon
+        >
+        <mat-icon
+          *ngIf="user$ | async"
+          class="icon"
+          aria-label="Side nav toggle icon"
+          >person</mat-icon
+        >
       </button>
-      <span class="title">Codebreaker </span><span class="xl"> XL</span>
     </mat-toolbar>
     <ng-content></ng-content>
   </mat-sidenav-content>

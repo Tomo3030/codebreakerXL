@@ -19,6 +19,7 @@ import { LayoutModule } from "@angular/cdk/layout";
 import { NavComponent } from "./nav/nav.component";
 import { SpinnerComponent } from "./spinner/spinner.component";
 import { FormsModule } from "@angular/forms";
+import { NotFoundComponent } from './not-found/not-found.component';
 
 const components = [NavComponent, SpinnerComponent];
 
@@ -42,7 +43,7 @@ const modules = [
 ];
 
 @NgModule({
-  declarations: [...components],
+  declarations: [...components, NotFoundComponent],
   imports: [...modules],
   exports: [...modules, ...components]
 })

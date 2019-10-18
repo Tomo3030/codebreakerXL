@@ -13,7 +13,7 @@
         You must enter a valid email address
       </mat-error>
     </mat-form-field>
-    <mat-form-field [color]="email.valid && 'accent'" *ngIf="!isPasswordReset">
+    <mat-form-field [color]="email.valid && 'accent'">
       <input
         matInput
         formControlName="password"

@@ -89,7 +89,6 @@ export class MembersDialogComponent implements OnInit {
   }
 
   goToGame() {
-    console.log(this.data.name);
     this.dialogRef.close();
     if (this.data.creator)
       this.router.navigate(["/game/speaker/round 1/" + this.data.gameId]);

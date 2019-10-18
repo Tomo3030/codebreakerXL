@@ -11,6 +11,7 @@ export class LoginLandingComponent implements OnInit {
   user;
   loading;
   toggleLogin = true;
+
   constructor(
     private userService: UserService,
     private afAuth: AngularFireAuth

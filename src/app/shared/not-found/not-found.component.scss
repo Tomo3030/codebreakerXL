@@ -1,0 +1,39 @@
+.main {
+  text-align: center;
+  font-family: "Share Tech Mono", monospace;
+}
+
+.logo-container {
+  margin-top: 40px;
+  text-align: center;
+  position: relative;
+}
+
+.icon {
+  font-size: 4em;
+}
+
+.title {
+  font-size: 12em;
+}
+
+.subtitle {
+  display: inline-flex;
+  align-items: center;
+  text-align: left;
+  font-size: 1.5em;
+  margin: 0px 10px;
+  height: 100px;
+}
+
+.button {
+  font-size: 1.5em;
+  padding: 10px 50px;
+  margin-top: 40px;
+  cursor: pointer;
+}
+
+.button-icon {
+  font-size: 1.5em;
+  margin-right: 10px;
+}

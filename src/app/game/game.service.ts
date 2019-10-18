@@ -1,6 +1,5 @@
 import { AngularFirestore } from "@angular/fire/firestore";
 import { Injectable } from "@angular/core";
-import firebase from "firebase";
 
 @Injectable({
   providedIn: "root"
@@ -12,13 +11,6 @@ export class GameService {
       .collection("games")
       .doc(gameId)
       .update({ score: score });
-  }
-
-  deleteEmojiList(gameId) {
-    return this.afs
-      .collection("games")
-      .doc(gameId)
-      .update({ emojiList: firebase.firestore.FieldValue.delete() });
   }
 
   playerReady(gameId, role) {

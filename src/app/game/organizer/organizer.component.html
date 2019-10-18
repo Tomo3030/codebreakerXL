@@ -15,18 +15,19 @@
       {{ e }}
     </div>
   </div>
-
-  <div
-    #currentDisplay="cdkDropList"
-    cdkDropList
-    cdkDropListOrientation="horizontal"
-    [cdkDropListData]="currentDisplayArray"
-    (cdkDropListDropped)="onDrop($event)"
-    [cdkDropListConnectedTo]="answerList"
-    class="emoji-holder"
-  >
-    <div *ngFor="let e of currentDisplayArray" cdkDrag class="emoji">
-      {{ e }}
+  <div class="emoji-holder-contaier">
+    <div
+      #currentDisplay="cdkDropList"
+      cdkDropList
+      cdkDropListOrientation="horizontal"
+      [cdkDropListData]="currentDisplayArray"
+      (cdkDropListDropped)="onDrop($event)"
+      [cdkDropListConnectedTo]="answerList"
+      class="emoji-holder"
+    >
+      <div *ngFor="let e of currentDisplayArray" cdkDrag class="emoji">
+        {{ e }}
+      </div>
     </div>
   </div>
   <div>

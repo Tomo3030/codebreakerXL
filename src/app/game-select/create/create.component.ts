@@ -1,9 +1,6 @@
-import { user } from "./../../shared/user";
-import { gameData } from "./../../shared/gameData";
 import { GameService } from "./../game.service";
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { Observable } from "rxjs";
 import { MembersDialogComponent } from "../dialogs/members-dialog.component";
 import { MatDialog } from "@angular/material";
 import { take } from "rxjs/operators";

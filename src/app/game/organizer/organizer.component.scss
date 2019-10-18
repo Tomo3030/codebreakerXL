@@ -10,17 +10,24 @@
   border-radius: 12px;
   background-color: lighten(black, 30%);
   align-items: center;
-
   border: 2px Orange solid;
 }
 
 .emoji {
-  font-size: 3.5em;
+  font-size: 12vw;
+  margin: 5px;
+}
+
+.code.emoji {
   margin: 5px;
 }
 
 .emoji-holder {
-  display: inline-flex;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
   margin: auto;
 }
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material";
-import { Router } from "@angular/router";
+import { Router, NavigationEnd } from "@angular/router";
 import { EmojiService } from "../shared/emoji.service";
 
 @Component({
@@ -102,13 +102,15 @@ export class EndDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.data);
     this.changePosition();
   }
 
   goToRound(round) {
     if (this.clickable) {
       this.clickable = false;
+      if (round === "round 1") {
+        this.emojiService.deleteScore(this.data.gameId);
+      }
       const newRole = this.data.role === "organizer" ? "speaker" : "organizer";
       if (newRole === "speaker") {
         const emojiList = this.emojiService.makeEmojiList(100);

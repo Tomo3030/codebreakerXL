@@ -1,3 +1,4 @@
+import { NotFoundComponent } from "./shared/not-found/not-found.component";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
@@ -5,6 +6,7 @@ const routes: Routes = [
   {
     path: "",
     loadChildren: () => import("./user/user.module").then(m => m.UserModule)
+    //loadChildren: "./user/user.module#Usermodule"
   },
   {
     path: "gameselect",
@@ -18,6 +20,10 @@ const routes: Routes = [
   {
     path: "score",
     loadChildren: () => import("./score/score.module").then(m => m.ScoreModule)
+  },
+  {
+    path: "**",
+    component: NotFoundComponent
   }
 ];
 

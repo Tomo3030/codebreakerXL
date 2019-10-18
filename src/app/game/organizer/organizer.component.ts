@@ -19,9 +19,7 @@ export class OrganizerComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
-    //this.answerArray = [""];
-  }
+  ngOnInit() {}
 
   onDrop(e: CdkDragDrop<string[]>) {
     if (e.previousContainer !== e.container) {
