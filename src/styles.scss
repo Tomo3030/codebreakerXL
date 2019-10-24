@@ -51,6 +51,7 @@ $codebreakerXl-theme: mat-dark-theme(
 html,
 body {
   height: 100%;
+  overscroll-behavior: contain;
 }
 body {
   margin: 0;
