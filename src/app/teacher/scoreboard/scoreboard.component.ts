@@ -1,6 +1,6 @@
-import { ActivatedRoute } from "@angular/router";
-import { ScoreService } from "./../score.service";
 import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { ScoreService } from "../score.service";
 
 @Component({
   selector: "app-scoreboard",
@@ -20,19 +20,20 @@ export class ScoreboardComponent implements OnInit {
 
   ngOnInit() {
     this.scoreboardId = this.activatedRoute.snapshot.paramMap.get(
-      "scoreboardId"
+      "classroomId"
     );
 
     this.scoreSubscription = this.scoreService
       .getScores(this.scoreboardId)
       .subscribe(scoreObj => {
-        //console.log(scoreObj[0].payload.doc.data());
-        //console.log(scoreObj[0].payload.doc.id);
         this.sortedScore = scoreObj.map(x => {
           const data = x.payload.doc.data();
           const id = x.payload.doc.id;
           return { id, ...data };
         });
+        //console.log(scoreObj[0].payload.doc.data());
+        //console.log(scoreObj[0].payload.doc.id);
+
         this.sortedScore
           .sort((a, b) => {
             return b.score - a.score;

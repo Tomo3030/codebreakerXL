@@ -1,3 +1,5 @@
+import { gameData } from "./../../shared/gameData";
+import { user } from "./../../shared/user";
 import { GameService } from "./../game.service";
 import { EmojiService } from "./../../shared/emoji.service";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -32,6 +34,8 @@ export class ShellComponent implements OnInit, OnDestroy {
   correctAnswer = [];
   subscription;
   player;
+  classroomId;
+  names;
 
   __ready: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   ready$: Observable<boolean> = this.__ready.asObservable();
@@ -62,6 +66,7 @@ export class ShellComponent implements OnInit, OnDestroy {
       this.gameId = params.get("gameId");
       this.role = params.get("role");
       this.round = params.get("round");
+      this.classroomId = params.get("classroomId");
       if (this.gameId && this.role && this.round) {
         this.__onPage.next(true);
       }
@@ -91,6 +96,9 @@ export class ShellComponent implements OnInit, OnDestroy {
           this.spinner = false;
           this.infoComponent.startTimer();
           this.gameService.playerNotReady(this.gameId, this.player);
+        }
+        if (!this.names) {
+          this.names = gameData.creator.name + " & " + gameData.joiner.name;
         }
       });
   }
@@ -123,6 +131,13 @@ export class ShellComponent implements OnInit, OnDestroy {
   }
 
   timeUp() {
+    if (
+      this.player === "p1" &&
+      this.classroomId &&
+      this.round === "round 2" &&
+      this.score > 1
+    )
+      this.postHighScore();
     this.dialog.open(EndDialogComponent, {
       data: {
         score: this.score,
@@ -175,5 +190,9 @@ export class ShellComponent implements OnInit, OnDestroy {
     return !this.emojiList.every((emoji, i) => {
       return emoji == emojiArray[i];
     });
+  }
+
+  postHighScore() {
+    this.gameService.postHighScore(this.classroomId, this.names, this.score);
   }
 }

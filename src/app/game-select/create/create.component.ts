@@ -13,6 +13,7 @@ import { take } from "rxjs/operators";
 export class CreateComponent implements OnInit, OnDestroy {
   gameId;
   gameSubscription;
+  classroomId;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -21,6 +22,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.classroomId = this.activatedRoute.snapshot.paramMap.get("classroomId");
     this.gameId = this.activatedRoute.snapshot.paramMap.get("gameId");
     this.gameSubscription = this.gameService
       .getGame(this.gameId)
@@ -32,7 +34,8 @@ export class CreateComponent implements OnInit, OnDestroy {
           let data = {
             email: otherPlayer.email,
             gameId: this.gameId,
-            creator: true
+            creator: true,
+            classroomId: this.classroomId
           };
           this.openDialog(data);
         }

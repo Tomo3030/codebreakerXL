@@ -1,21 +1,25 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" position="end">
-    <mat-toolbar>
+    <mat-toolbar class="flex">
       <div *ngIf="user$ | async as user">
         <!-- <span class="circle">{{ user.displayName.charAt(0) }}</span> -->
+        <span class="name">{{ user.displayName }}</span>
         <span class="email">{{ user.email }}</span>
       </div>
       <span class="email" *ngIf="!(user$ | async)">Not Logged In</span>
     </mat-toolbar>
     <mat-nav-list>
-      <button
+      <a
         *ngIf="user$ | async"
         mat-list-item
         (click)="signOut()"
         (click)="drawer.toggle()"
       >
+        <mat-icon class="material-icons" matListIcon>
+          person_add_disabled
+        </mat-icon>
         Sign Out
-      </button>
+      </a>
       <a
         *ngIf="!(user$ | async)"
         mat-list-item
@@ -24,6 +28,20 @@
       >
         Sign In
       </a>
+    </mat-nav-list>
+    <mat-nav-list *ngIf="(authstate$ | async)?.claims.admin">
+      <a routerLink="/admin" mat-list-item (click)="drawer.toggle()"
+        ><mat-icon class="material-icons" matListIcon>
+          settings_applications </mat-icon
+        >Admin</a
+      >
+    </mat-nav-list>
+    <mat-nav-list *ngIf="(authstate$ | async)?.claims.teacher">
+      <a routerLink="/teacher/classroom" mat-list-item (click)="drawer.toggle()"
+        ><mat-icon class="material-icons" matListIcon>
+          create_new_folder </mat-icon
+        >Make Classroom</a
+      >
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

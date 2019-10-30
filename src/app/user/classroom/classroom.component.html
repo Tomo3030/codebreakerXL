@@ -1,0 +1,21 @@
+<app-spinner top="200px" *ngIf="spinner"></app-spinner>
+
+<p class="instructions mat-typography">Enter your class code:</p>
+<div class="container">
+  <mat-card class="card" [class.shake]="shake">
+    <input
+      class="input"
+      type="number"
+      #pin
+      [(ngModel)]="pinned"
+      name="pin"
+      type="number"
+      (keyup)="keyUp()"
+      autofocus
+    />
+  </mat-card>
+
+  <button (click)="submit()" mat-raised-button color="accent" class="button">
+    Submit
+  </button>
+</div>

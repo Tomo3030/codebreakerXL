@@ -1,0 +1,27 @@
+<app-spinner *ngIf="spinner" top="120px"></app-spinner>
+
+<div class="center">
+  <h2>Give Priveleges</h2>
+  <mat-card class="card">
+    <mat-form-field class="label" appearance="outline">
+      <mat-label>Enter Email</mat-label>
+      <input [(ngModel)]="email" matInput autocomplete="off" />
+    </mat-form-field>
+
+    <mat-form-field class="label" appearance="outline">
+      <mat-label>Pick a Role</mat-label>
+      <mat-select [(ngModel)]="role">
+        <mat-option value="admin">
+          Admin
+        </mat-option>
+        <mat-option value="teacher">
+          Teacher
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-card>
+
+  <button (click)="makeRole()" mat-raised-button color="accent" class="button">
+    Add Role
+  </button>
+</div>

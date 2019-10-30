@@ -1,53 +1,55 @@
-<h1 class="header">Login</h1>
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <mat-card class="card">
-    <mat-form-field [color]="email.valid && 'accent'">
-      <input
-        matInput
-        formControlName="email"
-        type="email"
-        placeholder="Email"
-        autocomplete="off"
-      />
-      <mat-error *ngIf="email.invalid && email.dirty">
-        You must enter a valid email address
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field [color]="email.valid && 'accent'">
-      <input
-        matInput
-        formControlName="password"
-        type="password"
-        placeholder="Password"
-        autocomplete="off"
-      />
+<div class="outer">
+  <h1 class="header">Login</h1>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-card class="card">
+      <mat-form-field [color]="email.valid && 'accent'">
+        <input
+          matInput
+          formControlName="email"
+          type="email"
+          placeholder="Email"
+          autocomplete="off"
+        />
+        <mat-error *ngIf="email.invalid && email.dirty">
+          You must enter a valid email address
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field [color]="email.valid && 'accent'">
+        <input
+          matInput
+          formControlName="password"
+          type="password"
+          placeholder="Password"
+          autocomplete="off"
+        />
 
-      <mat-error *ngIf="password.invalid && password.dirty">
-        Password must be at least 6 characters long
-      </mat-error>
-    </mat-form-field>
+        <mat-error *ngIf="password.invalid && password.dirty">
+          Password must be at least 6 characters long
+        </mat-error>
+      </mat-form-field>
 
-    <mat-error class="server-error">{{ serverMessage }}</mat-error>
-  </mat-card>
+      <mat-error class="server-error">{{ serverMessage }}</mat-error>
+    </mat-card>
 
+    <div class="button-container">
+      <button class="button" mat-raised-button color="accent" type="submit">
+        Log In
+      </button>
+
+      <h4>or</h4>
+    </div>
+  </form>
   <div class="button-container">
-    <button class="button" mat-raised-button color="accent" type="submit">
-      Log In
+    <button
+      class="button"
+      mat-stroked-button
+      color="accent"
+      type="submit"
+      (click)="toggleLanding()"
+    >
+      Create an Account
     </button>
-
-    <h4>or</h4>
   </div>
-</form>
-<div class="button-container">
-  <button
-    class="button"
-    mat-stroked-button
-    color="accent"
-    type="submit"
-    (click)="toggleLanding()"
-  >
-    Create an Account
-  </button>
 </div>
 
 <!-- [disabled]="form.invalid || !passwordDoesMatch" -->

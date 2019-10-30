@@ -20,10 +20,6 @@
   flex: 1 1 auto;
 }
 
-.email {
-  font-size: 4vw;
-}
-
 .logo {
   text-decoration: none;
   color: black;
@@ -40,4 +36,19 @@
 
 mat-icon {
   font-size: 2em;
+}
+
+.name {
+  display: block;
+  margin-bottom: -10px;
+  font-weight: bold;
+}
+.email {
+  display: block;
+  font-size: 0.8em;
+}
+
+.flex {
+  display: flex;
+  align-content: center;
 }

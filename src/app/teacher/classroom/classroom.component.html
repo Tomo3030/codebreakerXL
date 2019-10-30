@@ -1,0 +1,38 @@
+<app-spinner *ngIf="loading" top="120px"></app-spinner>
+
+<div class="outer">
+  <h2>Create a Classroom</h2>
+  <mat-card class="main-card">
+    <div>
+      <mat-form-field class="label">
+        <mat-label>Classroom Name</mat-label>
+        <input matInput autocomplete="off" />
+      </mat-form-field>
+    </div>
+    <mat-form-field class="label">
+      <mat-label>Pick a Category</mat-label>
+      <mat-select>
+        <mat-option
+          *ngFor="let c of categories"
+          value="[c.cat]"
+          [disabled]="c.disabled"
+          ><div>
+            <span *ngIf="c.disabled"
+              ><mat-icon class="material-icons ">
+                lock
+              </mat-icon></span
+            >{{ c.cat }}
+          </div></mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+  </mat-card>
+  <button
+    mat-raised-button
+    color="accent"
+    class="button"
+    (click)="createClassroom()"
+  >
+    Create Classroom
+  </button>
+</div>

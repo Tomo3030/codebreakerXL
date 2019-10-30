@@ -90,8 +90,26 @@ export class MembersDialogComponent implements OnInit {
 
   goToGame() {
     this.dialogRef.close();
-    if (this.data.creator)
-      this.router.navigate(["/game/speaker/round 1/" + this.data.gameId]);
-    else this.router.navigate(["/game/organizer/round 1/" + this.data.gameId]);
+    if (!this.data.classroomId) {
+      if (this.data.creator)
+        this.router.navigate(["/game/speaker/round 1/" + this.data.gameId]);
+      else
+        this.router.navigate(["/game/organizer/round 1/" + this.data.gameId]);
+    } else {
+      if (this.data.creator)
+        this.router.navigate([
+          "class/" +
+            this.data.classroomId +
+            "/game/speaker/round 1/" +
+            this.data.gameId
+        ]);
+      else
+        this.router.navigate([
+          "class/" +
+            this.data.classroomId +
+            "/game/organizer/round 1/" +
+            this.data.gameId
+        ]);
+    }
   }
 }

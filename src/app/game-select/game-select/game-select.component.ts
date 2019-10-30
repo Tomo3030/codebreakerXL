@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { GameService } from "../game.service";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-game-select",
@@ -9,14 +9,29 @@ import { Router } from "@angular/router";
 })
 export class GameSelectComponent implements OnInit {
   loading;
-  constructor(private gameService: GameService, private router: Router) {}
+  classroomId;
+  constructor(
+    private gameService: GameService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.classroomId = this.activatedRoute.snapshot.paramMap.get("classroomId");
+  }
 
   createGame() {
     this.loading = true;
     this.gameService.createGame().then(gameId => {
-      this.router.navigate(["/gameselect/create/" + gameId]);
+      this.navigateToGame(gameId);
     });
+  }
+
+  navigateToGame(gameId) {
+    if (this.classroomId)
+      this.router.navigate([
+        "/class/" + this.classroomId + "/gameselect/create/" + gameId
+      ]);
+    else this.router.navigate(["/gameselect/create/" + gameId]);
   }
 }

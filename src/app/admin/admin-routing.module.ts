@@ -1,11 +1,11 @@
-import { ScoreboardComponent } from "./scoreboard/scoreboard.component";
+import { AdminPanelComponent } from "./admin-panel/admin-panel.component";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
 const routes: Routes = [
   {
-    path: ":scoreboardId",
-    component: ScoreboardComponent
+    path: "",
+    component: AdminPanelComponent
   }
 ];
 
@@ -13,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ScoreRoutingModule {}
+export class AdminRoutingModule {}

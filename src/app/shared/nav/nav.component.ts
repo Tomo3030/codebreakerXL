@@ -1,6 +1,8 @@
 import { AngularFireAuth } from "@angular/fire/auth";
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { switchMap } from "rxjs/operators";
+import { of } from "rxjs";
 
 @Component({
   selector: "app-nav",
@@ -9,10 +11,17 @@ import { Router } from "@angular/router";
 })
 export class NavComponent implements OnInit {
   user$;
+  authstate$;
   constructor(private afAuth: AngularFireAuth, private router: Router) {}
 
   async ngOnInit() {
     this.user$ = this.afAuth.authState;
+    this.authstate$ = this.afAuth.authState.pipe(
+      switchMap(authstate => {
+        if (authstate) return authstate.getIdTokenResult();
+        return of(null);
+      })
+    );
   }
 
   signOut() {

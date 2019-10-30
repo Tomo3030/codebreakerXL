@@ -1,5 +1,5 @@
 import { AngularFirestore } from "@angular/fire/firestore";
-import { gameData } from "./../shared/gameData";
+import { gameData } from "../shared/gameData";
 import { Injectable } from "@angular/core";
 
 @Injectable({
@@ -10,16 +10,16 @@ export class ScoreService {
 
   getScores(scoreboardId) {
     return this.afs
-      .collection("scores")
+      .collection("classrooms")
       .doc(scoreboardId)
       .collection("scores")
       .snapshotChanges();
   }
 
-  deleteSingleScore(routeId, scoreId) {
+  deleteSingleScore(classroomId, scoreId) {
     return this.afs
-      .collection("scores")
-      .doc(routeId)
+      .collection("classrooms")
+      .doc(classroomId.toString())
       .collection("scores")
       .doc(scoreId)
       .delete();

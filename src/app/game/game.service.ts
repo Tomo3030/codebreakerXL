@@ -26,4 +26,13 @@ export class GameService {
       .doc(gameId)
       .update({ [role]: false });
   }
+
+  postHighScore(classroomId, names, score) {
+    console.log(classroomId, names, score);
+    this.afs
+      .collection("classrooms")
+      .doc(classroomId.toString())
+      .collection("scores")
+      .add({ names: names, score: score });
+  }
 }

@@ -43,9 +43,6 @@ $codebreakerXl-theme: mat-dark-theme(
   .cdk-overlay-pane {
     max-width: 90vw !important;
   }
-  .mat-simple-snackbar {
-    font-size: 1.1em !important;
-  }
 }
 
 html,
@@ -56,4 +53,10 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+simple-snack-bar span {
+  font-size: 1.1em;
+  margin: auto;
+  text-align: center;
 }

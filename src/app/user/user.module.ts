@@ -10,13 +10,15 @@ import { MatFormFieldModule, MatInputModule } from "@angular/material";
 import { LoginLandingComponent } from "./login-landing/login-landing.component";
 import { CreateAccountComponent } from "./create-account/create-account.component";
 import { AlreadySignedInComponent } from "./already-signed-in/already-signed-in.component";
+import { ClassroomComponent } from './classroom/classroom.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     LoginLandingComponent,
     CreateAccountComponent,
-    AlreadySignedInComponent
+    AlreadySignedInComponent,
+    ClassroomComponent
   ],
   imports: [
     CommonModule,

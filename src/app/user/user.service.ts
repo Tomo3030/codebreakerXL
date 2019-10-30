@@ -1,6 +1,10 @@
 import { AngularFireAuth } from "@angular/fire/auth";
 import { Injectable } from "@angular/core";
-import { AngularFirestore } from "@angular/fire/firestore";
+import {
+  AngularFirestore,
+  AngularFirestoreDocument
+} from "@angular/fire/firestore";
+import { take } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root"
@@ -25,5 +29,18 @@ export class UserService {
 
   logInUser(name, password) {
     return this.afAuth.auth.signInWithEmailAndPassword(name, password);
+  }
+
+  async checkIfClassroomExists(classroomId) {
+    let ref = this.afs.collection("classrooms").doc(classroomId.toString());
+    let doc = await this.checkIfDocExists(ref);
+    return doc;
+  }
+
+  private checkIfDocExists(doc: AngularFirestoreDocument) {
+    return doc
+      .get()
+      .pipe(take(1))
+      .toPromise();
   }
 }

@@ -1,3 +1,4 @@
+import { ActivatedRoute } from "@angular/router";
 import { MembersDialogComponent } from "./../dialogs/members-dialog.component";
 import { GameService } from "./../game.service";
 import { Component, OnInit, OnDestroy } from "@angular/core";
@@ -14,17 +15,21 @@ export class JoinComponent implements OnInit, OnDestroy {
   shake;
   spinner;
   gameSubscription;
+  classroomId;
 
   constructor(
     private gameService: GameService,
     public dialog: MatDialog,
-    public snack: MatSnackBar
+    public snack: MatSnackBar,
+    private activatedRoute: ActivatedRoute
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.classroomId = this.activatedRoute.snapshot.paramMap.get("classroomId");
+  }
 
   ngOnDestroy() {
-    this.gameSubscription.unsubscribe();
+    if (this.gameSubscription) this.gameSubscription.unsubscribe();
   }
 
   submit() {
@@ -48,7 +53,8 @@ export class JoinComponent implements OnInit, OnDestroy {
             email: otherPlayer.email,
             //uid: this.otherPlayer.uid,
             gameId: this.pinned,
-            creator: false
+            creator: false,
+            classroomId: this.classroomId
           };
           return this.openDialog(data);
         } else if (game && game.joiner) {
