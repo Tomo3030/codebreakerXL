@@ -4,7 +4,7 @@ import { GameService } from "./../game.service";
 import { EmojiService } from "./../../shared/emoji.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Component, OnInit, ViewChild, OnDestroy } from "@angular/core";
-import { MatDialog } from "@angular/material";
+import { MatDialog, MatSnackBar } from "@angular/material";
 import { EndDialogComponent } from "../end-dialog.component";
 import { InfoComponent } from "../info/info.component";
 import { Observable, BehaviorSubject, combineLatest } from "rxjs";
@@ -46,7 +46,7 @@ export class ShellComponent implements OnInit, OnDestroy {
     private emojiService: EmojiService,
     public dialog: MatDialog,
     private gameService: GameService,
-    private router: Router
+    private snack: MatSnackBar
   ) {}
 
   ngOnDestroy() {
@@ -97,7 +97,12 @@ export class ShellComponent implements OnInit, OnDestroy {
           this.infoComponent.startTimer();
           this.gameService.playerNotReady(this.gameId, this.player);
         }
-        if (!this.names) {
+        if (
+          this.classroomId &&
+          !this.names &&
+          gameData.joiner &&
+          gameData.joiner.name
+        ) {
           this.names = gameData.creator.name + " & " + gameData.joiner.name;
         }
       });
@@ -169,6 +174,7 @@ export class ShellComponent implements OnInit, OnDestroy {
       );
       this.answerArray = [];
     } else {
+      this.openSnack("You got it wrong! Try again!");
       this.handleShakeAnimation();
       this.currentDisplayArray = this.randomizeArray(
         this.currentDisplayArray.concat(this.answerArray)
@@ -190,6 +196,10 @@ export class ShellComponent implements OnInit, OnDestroy {
     return !this.emojiList.every((emoji, i) => {
       return emoji == emojiArray[i];
     });
+  }
+
+  openSnack(msg) {
+    this.snack.open(msg, null, { duration: 4000 });
   }
 
   postHighScore() {

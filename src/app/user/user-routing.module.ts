@@ -5,7 +5,6 @@ import { LoginLandingComponent } from "./login-landing/login-landing.component";
 
 const routes: Routes = [
   { path: "", component: LoginLandingComponent },
-  { path: "classroom", redirectTo: "#/classroom" },
   { path: "classroom", component: ClassroomComponent },
   { path: "classroom/:classroomId", component: LoginLandingComponent }
 ];

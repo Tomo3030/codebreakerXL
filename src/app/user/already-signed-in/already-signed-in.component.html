@@ -1,27 +1,30 @@
 <div class="container">
-  <h1 class="header">Welcome back to</h1>
-  <div class="logo-container">
-    <div class="title">Codebreaker</div>
-    <div class="xl">XL</div>
-  </div>
-  <div>
-    <button
-      (click)="playGame()"
-      class="button"
-      color="accent"
-      mat-raised-button
-    >
-      Play the Game!
-    </button>
-  </div>
+  <div class="inner">
+    <h1 class="header">Welcome back to</h1>
+    <div class="logo-container">
+      <!-- <div class="title">Codebreaker</div>
+    <div class="xl">XL</div> -->
+      <img src="../../../assets/logo/bigLogo.svg" alt="" />
+    </div>
+    <div>
+      <button
+        (click)="playGame()"
+        class="button"
+        color="accent"
+        mat-raised-button
+      >
+        Play the Game!
+      </button>
+    </div>
 
-  <span *ngIf="user | async as user"
-    >Not <span class="email"> {{ user.email }}</span
-    >?</span
-  >
-  <div class="button-container">
-    <button (click)="logOut()" class="button" mat-stroked-button>
-      Log in with another account
-    </button>
+    <span *ngIf="user | async as user"
+      >Not <span class="email"> {{ user.email }}</span
+      >?</span
+    >
+    <div>
+      <button (click)="logOut()" class="button" mat-stroked-button>
+        Log in with another account
+      </button>
+    </div>
   </div>
 </div>

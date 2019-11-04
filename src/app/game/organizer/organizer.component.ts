@@ -2,7 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import {
   transferArrayItem,
   moveItemInArray,
-  CdkDragDrop
+  CdkDragDrop,
+  CdkDrag
 } from "@angular/cdk/drag-drop";
 
 @Component({
@@ -16,12 +17,17 @@ export class OrganizerComponent implements OnInit {
   @Input() shake;
   @Input() answerArray;
   @Output() submitAnswer = new EventEmitter();
+  @Output() maxLength = new EventEmitter();
 
   constructor() {}
 
   ngOnInit() {}
 
   onDrop(e: CdkDragDrop<string[]>) {
+    if (e.container.id === "cdk-drop-list-0" && e.container.data.length === 5) {
+      this.maxLength.emit();
+      return;
+    }
     if (e.previousContainer !== e.container) {
       transferArrayItem(
         e.previousContainer.data,

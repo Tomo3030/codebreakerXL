@@ -1,6 +1,7 @@
 .outer {
-  text-align: center;
-  width: 100%;
+  width: 90%;
+  max-width: 500px;
+  margin: auto;
 }
 
 .label {
@@ -8,9 +9,12 @@
 }
 
 .main-card {
-  width: 85%;
-  max-width: 400px;
+  max-width: 500px;
   margin: 20px auto;
+}
+
+.button-container {
+  text-align: center;
 }
 
 .button {
