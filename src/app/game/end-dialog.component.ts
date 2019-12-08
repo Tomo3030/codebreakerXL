@@ -102,6 +102,7 @@ export class EndDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.data);
     this.changePosition();
   }
 
@@ -114,17 +115,17 @@ export class EndDialogComponent implements OnInit {
       const newRole = this.data.role === "organizer" ? "speaker" : "organizer";
       if (newRole === "speaker") {
         const emojiList = this.emojiService.makeEmojiList(100);
-        this.emojiService
-          .postDataToDb(emojiList, this.data.gameId)
-          .then(() =>
-            this.router.navigateByUrl(
-              "/game/" + newRole + "/" + round + "/" + this.data.gameId
-            )
-          );
+        this.emojiService.postDataToDb(emojiList, this.data.gameId).then(() => {
+          this.router.navigate([
+            `/game/${newRole}/${round}/${this.data.gameId}`,
+            { classroomId: this.data.classroomId }
+          ]);
+        });
       } else {
-        this.router.navigateByUrl(
-          "/game/" + newRole + "/" + round + "/" + this.data.gameId
-        );
+        this.router.navigate([
+          `/game/${newRole}/${round}/${this.data.gameId}`,
+          { classroomId: this.data.classroomId }
+        ]);
       }
       this.dialogRef.close();
     }

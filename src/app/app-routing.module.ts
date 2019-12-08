@@ -16,19 +16,9 @@ const routes: Routes = [
       import("./game-select/game-select.module").then(m => m.GameSelectModule),
     canActivate: [AuthGuard]
   },
-  {
-    path: "class/:classroomId/gameselect",
-    loadChildren: () =>
-      import("./game-select/game-select.module").then(m => m.GameSelectModule),
-    canActivate: [AuthGuard]
-  },
+
   {
     path: "game",
-    loadChildren: () => import("./game/game.module").then(m => m.GameModule),
-    canActivate: [AuthGuard]
-  },
-  {
-    path: "class/:classroomId/game",
     loadChildren: () => import("./game/game.module").then(m => m.GameModule),
     canActivate: [AuthGuard]
   },

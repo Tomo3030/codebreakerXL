@@ -1,0 +1,21 @@
+<div class="outer">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-card class="card">
+      <h1 class="header">Enter Name</h1>
+      <mat-form-field>
+        <input
+          matInput
+          formControlName="name"
+          type="name"
+          placeholder="Name"
+          autocomplete="off"
+        />
+      </mat-form-field>
+    </mat-card>
+  </form>
+  <div class="button-container">
+    <button class="button" mat-raised-button color="accent" type="submit">
+      Log In
+    </button>
+  </div>
+</div>

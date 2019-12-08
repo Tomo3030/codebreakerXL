@@ -72,6 +72,7 @@ export class ShellComponent implements OnInit, OnDestroy {
       }
     });
     this.player = this.role === "speaker" ? "p1" : "p2";
+    console.log(this.classroomId);
 
     this.subscription = this.emojiService
       .getGame(this.gameId)
@@ -136,19 +137,23 @@ export class ShellComponent implements OnInit, OnDestroy {
   }
 
   timeUp() {
+    console.log(this.player, this.classroomId, this.round);
     if (
       this.player === "p1" &&
       this.classroomId &&
       this.round === "round 2" &&
       this.score > 1
-    )
+    ) {
+      console.log("aj");
       this.postHighScore();
+    }
     this.dialog.open(EndDialogComponent, {
       data: {
         score: this.score,
         round: this.round,
         role: this.role,
-        gameId: this.gameId
+        gameId: this.gameId,
+        classroomId: this.classroomId
       }
     });
     this.spinner = true;
@@ -203,6 +208,7 @@ export class ShellComponent implements OnInit, OnDestroy {
   }
 
   postHighScore() {
+    console.log("aj");
     this.gameService.postHighScore(this.classroomId, this.names, this.score);
   }
 }

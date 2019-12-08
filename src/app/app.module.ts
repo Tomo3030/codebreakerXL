@@ -18,7 +18,6 @@ import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import { environment } from "src/environments/environment";
 import { ServiceWorkerModule } from "@angular/service-worker";
-//import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent],

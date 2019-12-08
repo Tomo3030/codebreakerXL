@@ -11,6 +11,7 @@ import { LoginLandingComponent } from "./login-landing/login-landing.component";
 import { CreateAccountComponent } from "./create-account/create-account.component";
 import { AlreadySignedInComponent } from "./already-signed-in/already-signed-in.component";
 import { ClassroomComponent } from './classroom/classroom.component';
+import { AnonymousLoginComponent } from './anonymous-login/anonymous-login.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ClassroomComponent } from './classroom/classroom.component';
     LoginLandingComponent,
     CreateAccountComponent,
     AlreadySignedInComponent,
-    ClassroomComponent
+    ClassroomComponent,
+    AnonymousLoginComponent
   ],
   imports: [
     CommonModule,

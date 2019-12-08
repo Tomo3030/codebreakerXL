@@ -26,7 +26,7 @@ export class ClassroomComponent implements OnInit {
       this.pinned
     );
     if (classroom.exists)
-      this.router.navigateByUrl("/classroom/" + this.pinned);
+      this.router.navigate([`/login`, { classroomId: this.pinned }]);
     else this.wrongPin();
   }
 

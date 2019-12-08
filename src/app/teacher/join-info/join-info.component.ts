@@ -13,6 +13,6 @@ export class JoinInfoComponent implements OnInit {
 
   ngOnInit() {
     this.classroomId = this.activatedRoute.snapshot.paramMap.get("classroomId");
-    this.url = "codebreakerxl.firebaseapp.com/#/class/" + this.classroomId;
+    this.url = `codebreakerxl.com/#/login;classroomId=${this.classroomId}`;
   }
 }

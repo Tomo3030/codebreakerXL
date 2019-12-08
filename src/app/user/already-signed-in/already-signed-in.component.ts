@@ -21,6 +21,7 @@ export class AlreadySignedInComponent implements OnInit {
   ngOnInit() {
     this.user = this.afAuth.authState;
     this.classroomId = this.activatedRoute.snapshot.paramMap.get("classroomId");
+    console.log(this.classroomId);
   }
 
   logOut() {
@@ -28,8 +29,6 @@ export class AlreadySignedInComponent implements OnInit {
   }
 
   playGame() {
-    if (this.classroomId)
-      this.router.navigateByUrl("/class/" + this.classroomId + "/gameselect");
-    else this.router.navigateByUrl("/gameselect");
+    this.router.navigate(["/gameselect", { classroomId: this.classroomId }]);
   }
 }
