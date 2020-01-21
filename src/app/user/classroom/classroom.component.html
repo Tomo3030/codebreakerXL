@@ -1,7 +1,7 @@
 <app-spinner top="200px" *ngIf="spinner"></app-spinner>
-
-<p class="instructions mat-typography">Enter your class code:</p>
 <div class="container">
+  <p class="instructions mat-typography">Enter your class code:</p>
+
   <mat-card class="card" [class.shake]="shake">
     <input
       class="input"
@@ -14,8 +14,25 @@
       autofocus
     />
   </mat-card>
+  <div class="button-container">
+    <div>
+      <button
+        (click)="submit()"
+        mat-raised-button
+        color="accent"
+        class="button"
+      >
+        Submit
+      </button>
+    </div>
 
-  <button (click)="submit()" mat-raised-button color="accent" class="button">
-    Submit
-  </button>
+    <button
+      (click)="noCode()"
+      mat-stroked-button
+      color="accent"
+      class="button space"
+    >
+      I don't have a class code
+    </button>
+  </div>
 </div>

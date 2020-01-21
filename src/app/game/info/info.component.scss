@@ -4,6 +4,12 @@
   font-size: 1.7em;
 }
 
+.round {
+  color: orange;
+  margin: -5px 0 20px 0;
+  font-size: 0.8em;
+}
+
 .circle {
   height: 50px;
   width: 50px;
@@ -21,7 +27,7 @@
   border-radius: 8px;
   font-size: 3em;
   //border: 2px orange solid;
-  margin: 10px;
+  margin: 10px 10px 0 10px;
 }
 
 .score-container {

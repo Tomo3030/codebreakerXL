@@ -80,25 +80,15 @@ export class MembersDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.changePosition();
     console.log(this.data);
-  }
-
-  changePosition() {
-    this.dialogRef.updatePosition({ top: "130px" });
   }
 
   goToGame() {
     this.dialogRef.close();
-    if (this.data.creator)
-      this.router.navigate([
-        `/game/speaker/round 1/${this.data.gameId}`,
-        { classroomId: this.data.classroomId }
-      ]);
-    else
-      this.router.navigate([
-        `/game/organizer/round 1/${this.data.gameId}`,
-        { classroomId: this.data.classroomId }
-      ]);
+    this.router.navigate([
+      "/game/",
+      this.data.gameId,
+      { classroomId: this.data.classroomId }
+    ]);
   }
 }

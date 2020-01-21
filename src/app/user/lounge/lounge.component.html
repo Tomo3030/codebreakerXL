@@ -1,0 +1,65 @@
+<app-spinner *ngIf="spinner" top="120px"></app-spinner>
+
+<div class="container">
+  <div class="input-container">
+    <input
+      #search
+      type="text"
+      class="input"
+      [(ngModel)]="studentSearch"
+      placeholder="Find your Partner"
+      (keyup)="filter()"
+    />
+  </div>
+
+  <div>
+    <mat-card class="card">
+      <mat-list *ngIf="filteredList; else loading">
+        <div *ngFor="let user of filteredList; index as i">
+          <mat-list-item *ngIf="!user.myPick" class="list-item">
+            <div
+              mat-line
+              [style.color]="
+                myPick[0] && myPick[0]?.uid !== user.uid ? 'gray' : 'white'
+              "
+            >
+              {{ user.name }}
+            </div>
+            <mat-progress-bar
+              *ngIf="myPick[0]?.uid == user.uid"
+              mat-line
+              mode="indeterminate"
+              style="width:90%"
+            ></mat-progress-bar>
+
+            <button
+              *ngIf="myPick[0]?.uid !== user.uid"
+              mat-raised-button
+              color="accent"
+              (click)="pickPartner(user)"
+              class="add"
+              [disabled]="!!myPick.length"
+            >
+              add
+            </button>
+            <button
+              mat-raised-button
+              class="add"
+              *ngIf="myPick[0]?.uid === user.uid"
+              color="warn"
+              (click)="unPickPartner()"
+            >
+              <i class="material-icons">
+                close
+              </i>
+            </button>
+          </mat-list-item>
+        </div>
+      </mat-list>
+    </mat-card>
+  </div>
+</div>
+
+<ng-template #loading>
+  <mat-spinner class="spin"></mat-spinner>
+</ng-template>

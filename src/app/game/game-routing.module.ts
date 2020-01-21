@@ -1,11 +1,11 @@
-import { ShellComponent } from "./shell/shell.component";
+import { GameShellComponent } from "./game-shell/game-shell.component";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
 const routes: Routes = [
   {
-    path: ":role/:round/:gameId",
-    component: ShellComponent
+    path: ":gameId",
+    component: GameShellComponent
   }
 ];
 

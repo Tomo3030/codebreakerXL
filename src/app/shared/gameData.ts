@@ -7,6 +7,6 @@ export interface gameData {
   emojiList2?: string[];
   score?: number;
   round?: string;
-  p1?: boolean;
-  p2?: boolean;
+  speaker?: boolean;
+  organizer?: boolean;
 }

@@ -6,22 +6,28 @@ import { Injectable } from "@angular/core";
 })
 export class GameService {
   constructor(private afs: AngularFirestore) {}
-  sendScoreToDb(gameId, score) {
+  sendScoreToDb(classroomId, gameId, score) {
     return this.afs
+      .collection("classrooms")
+      .doc(classroomId)
       .collection("games")
       .doc(gameId)
       .update({ score: score });
   }
 
-  playerReady(gameId, role) {
+  playerReady(classroomId, gameId, role) {
     return this.afs
+      .collection("classrooms")
+      .doc(classroomId)
       .collection("games")
       .doc(gameId)
       .update({ [role]: true });
   }
 
-  playerNotReady(gameId, role) {
+  playerNotReady(classroomId, gameId, role) {
     return this.afs
+      .collection("classrooms")
+      .doc(classroomId)
       .collection("games")
       .doc(gameId)
       .update({ [role]: false });
@@ -34,5 +40,23 @@ export class GameService {
       .doc(classroomId.toString())
       .collection("scores")
       .add({ names: names, score: score });
+  }
+
+  goToRound2(classroomId, gameId) {
+    return this.afs
+      .collection("classrooms")
+      .doc(classroomId)
+      .collection("games")
+      .doc(gameId)
+      .update({ round: 2 });
+  }
+
+  resetGame(classroomId, gameId, emojiList) {
+    return this.afs
+      .collection("classrooms")
+      .doc(classroomId)
+      .collection("games")
+      .doc(gameId)
+      .update({ round: 1, emojiList: emojiList, score: 0 });
   }
 }

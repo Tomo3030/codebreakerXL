@@ -1,7 +1,9 @@
+<app-spinner top="140px" *ngIf="spinner"></app-spinner>
+
 <div class="outer">
+  <h1 class="header">Enter Name</h1>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-card class="card">
-      <h1 class="header">Enter Name</h1>
       <mat-form-field>
         <input
           matInput
@@ -12,10 +14,10 @@
         />
       </mat-form-field>
     </mat-card>
+    <div class="button-container">
+      <button class="button" mat-raised-button color="accent" type="submit">
+        Log In
+      </button>
+    </div>
   </form>
-  <div class="button-container">
-    <button class="button" mat-raised-button color="accent" type="submit">
-      Log In
-    </button>
-  </div>
 </div>

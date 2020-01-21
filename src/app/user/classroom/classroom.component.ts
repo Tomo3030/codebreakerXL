@@ -22,11 +22,12 @@ export class ClassroomComponent implements OnInit {
   ngOnInit() {}
 
   async submit() {
+    this.spinner = true;
     const classroom = await this.userService.checkIfClassroomExists(
       this.pinned
     );
     if (classroom.exists)
-      this.router.navigate([`/login`, { classroomId: this.pinned }]);
+      this.router.navigate([`/anon`, { classroomId: this.pinned }]);
     else this.wrongPin();
   }
 
@@ -48,5 +49,9 @@ export class ClassroomComponent implements OnInit {
     this.snack.open(data, null, {
       duration: 5000
     });
+  }
+
+  noCode() {
+    this.router.navigate([`/login`, { classroomId: "none" }]);
   }
 }

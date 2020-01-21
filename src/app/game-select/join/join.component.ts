@@ -45,7 +45,7 @@ export class JoinComponent implements OnInit, OnDestroy {
       .subscribe(game => {
         if (game && !game.joiner) {
           console.log("game exists");
-          this.gameService.joinGame(this.pinned.toString());
+          this.gameService.noClassroomJoinGame(this.pinned.toString());
           const otherPlayer = game.creator;
           //console.log(this.otherPlayer);
           let data = {

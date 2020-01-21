@@ -71,3 +71,13 @@ simple-snack-bar span {
     font-size: 4em !important;
   }
 }
+
+.dialogBackgroundBlur {
+  background-color: #303030;
+  height: 90%;
+  top: 10%;
+}
+
+.custom-dialog-container .mat-dialog-container {
+  padding: 24px;
+}

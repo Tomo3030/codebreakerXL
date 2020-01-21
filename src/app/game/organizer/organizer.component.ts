@@ -24,7 +24,7 @@ export class OrganizerComponent implements OnInit {
   ngOnInit() {}
 
   onDrop(e: CdkDragDrop<string[]>) {
-    if (e.container.id === "cdk-drop-list-0" && e.container.data.length === 5) {
+    if (e.container.id === "cdk-drop-list-0" && e.container.data.length > 5) {
       this.maxLength.emit();
       return;
     }

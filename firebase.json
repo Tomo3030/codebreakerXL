@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/codebreakerxl",
+    "public": "dist/codebreakerXl",
     "ignore": [
       "firebase.json",
       "**/.*",

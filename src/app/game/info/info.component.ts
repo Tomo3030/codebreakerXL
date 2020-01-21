@@ -12,6 +12,7 @@ export class InfoComponent implements OnInit {
   timeSubscription;
   blink;
   @Input() score = 0;
+  @Input() round;
   @Output() timerFinished = new EventEmitter();
 
   constructor() {}
@@ -21,7 +22,7 @@ export class InfoComponent implements OnInit {
   }
 
   startTimer() {
-    this.timeRemaining = 120;
+    this.timeRemaining = 20;
     this.blink = false;
     const source = timer(0, 1000);
     this.timeSubscription = source.subscribe(() => {

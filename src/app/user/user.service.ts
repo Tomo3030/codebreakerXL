@@ -4,17 +4,21 @@ import {
   AngularFirestore,
   AngularFirestoreDocument
 } from "@angular/fire/firestore";
-import { take } from "rxjs/operators";
+import { take, switchMap, first } from "rxjs/operators";
+import { of } from "rxjs";
 
 @Injectable({
   providedIn: "root"
 })
 export class UserService {
+  uid;
+  user$;
   constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {}
 
   get user() {
     return this.afAuth.authState;
   }
+
   createUser(email, password, name) {
     return this.afAuth.auth
       .createUserWithEmailAndPassword(email, password)
@@ -42,5 +46,28 @@ export class UserService {
       .get()
       .pipe(take(1))
       .toPromise();
+  }
+
+  anonymousSignIn(name, classroom) {
+    return this.afAuth.auth
+      .signInAnonymously()
+      .then(user => {
+        //console.log(user.user.uid);
+        this.uid = user.user.uid;
+        user.user.updateProfile({ displayName: name });
+      })
+      .then(() => {
+        this.addUserToClassroom(name, classroom, this.uid);
+      });
+  }
+
+  addUserToClassroom(name, classroom, uid) {
+    console.log(name, classroom);
+    this.afs
+      .collection("classrooms")
+      .doc(classroom)
+      .collection("users")
+      .doc(uid)
+      .set({ name: name });
   }
 }

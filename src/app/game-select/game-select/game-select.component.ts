@@ -22,18 +22,12 @@ export class GameSelectComponent implements OnInit {
 
   createGame() {
     this.loading = true;
-    this.gameService.createGame().then(gameId => {
+    this.gameService.noClassroomCreateGame().then(gameId => {
       this.navigateToGame(gameId);
     });
   }
 
   navigateToGame(gameId) {
-    //   if (this.classroomId)
-    //     this.router.navigate([
-    //       "/class/" + this.classroomId + "/gameselect/create/" + gameId
-    //     ]);
-    //   else this.router.navigate(["/gameselect/create/" + gameId]);
-    // }
     this.router.navigate([
       "/gameselect/create/" + gameId,
       {

@@ -18,7 +18,9 @@
 }
 
 .container {
-  text-align: center;
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
 }
 
 .card {
@@ -42,6 +44,12 @@
   font-weight: 500;
 }
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .input :focus {
   border: none;
 }
@@ -54,9 +62,14 @@
 
 .button {
   width: 250px;
-  padding: 7px;
-  font-size: 1.4em;
-  font-weight: 300;
+  padding: 10px;
+  font-size: 1em;
+}
 
-  //font-family: "Share Tech Mono", monospace;
+.space {
+  margin-top: 24px;
+}
+
+.button-container {
+  text-align: center;
 }

@@ -11,7 +11,7 @@ export class EmojiService {
   //public emojiList: string[] = [];
   constructor(private afs: AngularFirestore) {}
 
-  makeEmojiList(number) {
+  getEmojis(number) {
     const fullEmojiList = emoji;
     const emojiList = [];
     do {
@@ -32,15 +32,19 @@ export class EmojiService {
   //     });
   // }
 
-  getGame(gameId): Observable<gameData> {
+  getGame(classroomId, gameId): Observable<gameData> {
     return this.afs
+      .collection("classrooms")
+      .doc(classroomId)
       .collection("games")
       .doc(gameId)
       .valueChanges();
   }
 
-  postDataToDb(emojiList, gameId) {
+  postDataToDb(classroomId, emojiList, gameId) {
     return this.afs
+      .collection("classrooms")
+      .doc(classroomId)
       .collection("games")
       .doc(gameId)
       .update({

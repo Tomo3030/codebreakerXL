@@ -1,0 +1,10 @@
+<p>You have received a request from:</p>
+<h1>{{ data.user.name }}</h1>
+<div class="button-container">
+  <button mat-raised-button color="accent" class="button" (click)="accept()">
+    Accept
+  </button>
+  <button mat-stroked-button color="warn" class="button" (click)="reject()">
+    Reject
+  </button>
+</div>

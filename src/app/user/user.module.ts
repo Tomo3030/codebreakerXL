@@ -6,12 +6,19 @@ import { UserRoutingModule } from "./user-routing.module";
 import { LoginComponent } from "./login/login.component";
 
 import { ReactiveFormsModule } from "@angular/forms";
-import { MatFormFieldModule, MatInputModule } from "@angular/material";
+import {
+  MatFormFieldModule,
+  MatInputModule,
+  MatProgressBarModule
+} from "@angular/material";
 import { LoginLandingComponent } from "./login-landing/login-landing.component";
 import { CreateAccountComponent } from "./create-account/create-account.component";
 import { AlreadySignedInComponent } from "./already-signed-in/already-signed-in.component";
-import { ClassroomComponent } from './classroom/classroom.component';
-import { AnonymousLoginComponent } from './anonymous-login/anonymous-login.component';
+import { ClassroomComponent } from "./classroom/classroom.component";
+import { AnonymousLoginComponent } from "./anonymous-login/anonymous-login.component";
+import { LoungeComponent } from "./lounge/lounge.component";
+import { PartnerRequestComponent } from "./dialog/partner-request/partner-request.component";
+import { PartnerRejectComponent } from "./dialog/partner-reject/partner-reject.component";
 
 @NgModule({
   declarations: [
@@ -20,7 +27,10 @@ import { AnonymousLoginComponent } from './anonymous-login/anonymous-login.compo
     CreateAccountComponent,
     AlreadySignedInComponent,
     ClassroomComponent,
-    AnonymousLoginComponent
+    AnonymousLoginComponent,
+    LoungeComponent,
+    PartnerRequestComponent,
+    PartnerRejectComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +38,9 @@ import { AnonymousLoginComponent } from './anonymous-login/anonymous-login.compo
     SharedModule,
     MatFormFieldModule,
     MatInputModule,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+    MatProgressBarModule
+  ],
+  entryComponents: [PartnerRequestComponent, PartnerRejectComponent]
 })
 export class UserModule {}
