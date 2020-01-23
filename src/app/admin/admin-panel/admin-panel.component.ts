@@ -1,7 +1,7 @@
 import { MatDialog } from "@angular/material";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { Component, OnInit } from "@angular/core";
-import firebase from "firebase";
+import firebase from "firebase/app";
 //import * as firebase from "firebase/app";
 import { AdminDialogComponent } from "../admin-dialog.component";
 //import "firebase/firestore";

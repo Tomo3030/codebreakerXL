@@ -36,6 +36,12 @@
         >Admin</a
       >
     </mat-nav-list>
+    <mat-nav-list *ngIf="(authstate$ | async)?.claims.admin">
+      <a routerLink="/admin/make-puzzle" mat-list-item (click)="drawer.toggle()"
+        ><mat-icon class="material-icons" matListIcon> create </mat-icon>Make
+        Puzzle</a
+      >
+    </mat-nav-list>
     <mat-nav-list *ngIf="(authstate$ | async)?.claims.teacher">
       <a routerLink="/teacher/classroom" mat-list-item (click)="drawer.toggle()"
         ><mat-icon class="material-icons" matListIcon>

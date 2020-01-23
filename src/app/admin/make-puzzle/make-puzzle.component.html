@@ -1,0 +1,55 @@
+<div class="flex">
+  <div class="section">
+    <h1>Make Puzzle</h1>
+    <mat-grid-list cols="5" class="grid center">
+      <mat-grid-tile
+        *ngFor="let e of emojiList; index as i"
+        [style.backgroundColor]="moving.includes(i) ? 'yellow' : null"
+        class="emoji"
+        (click)="moveEmoji(i)"
+        >{{ e }}</mat-grid-tile
+      >
+    </mat-grid-list>
+  </div>
+
+  <div class="section">
+    <mat-card class="card" *ngIf="cardDetails$ | async as details">
+      <mat-card-title>Puzzle Details</mat-card-title>
+      <mat-card-content>
+        <div>Puzzle Id: {{ details.nextPuzzleId }}</div>
+        <div>Tags:</div>
+        <div>Difficulty:</div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button>ADD TAG</button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="savePuzzle(details.nextPuzzleId)"
+        >
+          SAVE
+        </button>
+      </mat-card-actions>
+    </mat-card>
+    <div class="sticky">
+      <mat-grid-list cols="5" class=" right">
+        <mat-grid-tile
+          *ngFor="let e of replacementEmoji; index as i"
+          class="emoji back"
+          [style.backgroundColor]="this.replace === i ? 'yellow' : null"
+          (click)="replaceEmoji(i)"
+          >{{ e }}</mat-grid-tile
+        >
+      </mat-grid-list>
+
+      <button
+        mat-raised-button
+        color="accent"
+        class="button"
+        (click)="getNewReplacements()"
+      >
+        Get New Replacemnet Emojis
+      </button>
+    </div>
+  </div>
+</div>

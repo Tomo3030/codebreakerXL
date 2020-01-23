@@ -1,5 +1,5 @@
+import { switchMap } from "rxjs/operators";
 import { InstructionDialogComponent } from "./../dialogs/instruction-dialog.component";
-import { gameData } from "./../../shared/gameData";
 import { EndGameDialogComponent } from "./../dialogs/end-game-dialog.component";
 import { NextRoundDialogComponent } from "./../dialogs/next-round-dialog.component";
 import { SharedService } from "src/app/shared/shared.service";
@@ -9,7 +9,6 @@ import { Component, OnInit, ViewChild, OnDestroy } from "@angular/core";
 import { MatSnackBar, MatDialog } from "@angular/material";
 import { GameService } from "src/app/game/game.service";
 import { InfoComponent } from "../info/info.component";
-import { BehaviorSubject, Observable, combineLatest } from "rxjs";
 
 @Component({
   selector: "app-game-shell",
@@ -21,7 +20,6 @@ export class GameShellComponent implements OnInit, OnDestroy {
   private infoComponent: InfoComponent;
 
   score = 0; //input for gameInfo
-
   currentDisplayArray: string[] = []; //input for organizer
   organizerAnswer: string[] = []; // input for organizer
   addPoint: boolean; // input for organizer
@@ -30,28 +28,22 @@ export class GameShellComponent implements OnInit, OnDestroy {
   correctAnswer: string[] = []; //input for speaker
 
   role: string; //input for speaker & organizer
-  round;
 
+  round;
   gameId: string;
   classroomId: string;
-
   emojiList: string[] = []; // full emoji list from db
-
   numberOfExtraEmojis = 0;
+
+  spinner;
+  gameData$;
+  creator; //user data for creator
+  joiner; // userdata for joiner
 
   successSound = new Audio("../../assets/sounds/success.wav");
   failureSound = new Audio("../../assets/sounds/failure.wav");
 
-  spinner;
-
-  __dataReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  dataReady$: Observable<boolean> = this.__dataReady.asObservable();
-  __onPage: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  onPage$: Observable<boolean> = this.__onPage.asObservable();
-
-  gameData$;
-  creator; //user data for creator
-  joiner; // userdata for joiner
+  currentPuzzle: string;
 
   constructor(
     private snack: MatSnackBar,
@@ -71,60 +63,75 @@ export class GameShellComponent implements OnInit, OnDestroy {
     this.spinner = true;
     this.classroomId = this.activatedRoute.snapshot.paramMap.get("classroomId");
     this.gameId = this.activatedRoute.snapshot.paramMap.get("gameId");
-
-    combineLatest(this.dataReady$, this.onPage$).subscribe(
-      ([dataReady, onPage]) => {
-        if (dataReady && onPage) {
-          this.gameService.playerReady(
-            this.classroomId,
-            this.gameId,
-            this.role
-          );
-          this.__onPage.next(false);
-          this.__dataReady.next(false);
-        }
-      }
-    );
+    this.round = 1;
 
     this.gameData$ = this.emojiService
       .getGame(this.classroomId, this.gameId)
-      .subscribe(async gameData => {
-        this.creator = gameData.creator;
-        this.joiner = gameData.joiner;
-
-        if (!this.round || this.round !== gameData.round) {
-          console.log("no round");
-          this.round = gameData.round;
-          this.role = await this.getRole(gameData.creator);
-          this.__dataReady.next(true);
-          this.openInstructionsDialog();
-        }
-
-        if (this.score !== gameData.score) {
-          this.score = gameData.score;
-          this.handlePointAnimation();
-          this.correctAnswer = this.getNewDisplayArray();
-          this.successSound.play();
-        }
-
-        if (!this.emojiList.length) {
-          this.emojiList = gameData.emojiList;
-          this.correctAnswer = this.getNewDisplayArray();
-          this.currentDisplayArray = this.randomizeArray(this.correctAnswer);
-        }
-        if (gameData.organizer && gameData.speaker) {
-          this.spinner = false;
-          this.infoComponent.startTimer();
-          this.gameService.playerNotReady(
+      .pipe(
+        switchMap(gameData => {
+          this.setGameDetails(gameData);
+          console.log(this.currentPuzzle);
+          return this.gameService.getPuzzle(this.currentPuzzle);
+        }),
+        switchMap(emojiList => {
+          this.getEmojisReady(emojiList);
+          return this.gameService.makeGameRoom(
             this.classroomId,
             this.gameId,
-            this.role
+            this.currentPuzzle
           );
-        }
+        }),
+        switchMap(() => {
+          return this.gameService.getScore(
+            this.classroomId,
+            this.gameId,
+            this.currentPuzzle
+          );
+        })
+      )
+      .subscribe(gameData => {
+        this.updateGameData(gameData);
       });
   }
 
   //needNewEmojiList(): boolean {}
+
+  updateGameData(gameData) {
+    if (this.score !== gameData.score) {
+      this.score = gameData.score;
+      this.handlePointAnimation();
+      this.correctAnswer = this.getNewDisplayArray();
+      this.successSound.play();
+    }
+
+    if (gameData.organizer && gameData.speaker) {
+      this.spinner = false;
+      this.infoComponent.startTimer();
+      this.gameService.playerNotReady(
+        this.classroomId,
+        this.gameId,
+        this.currentPuzzle,
+        this.role
+      );
+    }
+  }
+
+  getEmojisReady(data) {
+    this.emojiList = data.puzzle;
+    this.correctAnswer = this.getNewDisplayArray();
+    this.currentDisplayArray = this.randomizeArray(this.correctAnswer);
+  }
+
+  async setGameDetails(data) {
+    this.creator = data.creator;
+    this.joiner = data.joiner;
+    const playCount = data.playCount;
+    const puzzleList = data.puzzleList;
+    this.currentPuzzle = puzzleList[playCount].toString();
+
+    this.role = await this.getRole(this.creator);
+    this.openInstructionsDialog();
+  }
 
   async getRole(creator): Promise<string> {
     let user = await this.sharedService.getUserPromise();
@@ -178,7 +185,12 @@ export class GameShellComponent implements OnInit, OnDestroy {
     this.numberOfExtraEmojis < 10
       ? this.numberOfExtraEmojis++
       : (this.numberOfExtraEmojis = 10);
-    this.gameService.sendScoreToDb(this.classroomId, this.gameId, this.score);
+    this.gameService.sendScoreToDb(
+      this.classroomId,
+      this.gameId,
+      this.currentPuzzle,
+      this.score
+    );
     this.correctAnswer = this.getNewDisplayArray();
     const radomEmoji = this.emojiService.getEmojis(this.numberOfExtraEmojis);
     this.currentDisplayArray = this.randomizeArray(
@@ -230,11 +242,18 @@ export class GameShellComponent implements OnInit, OnDestroy {
     }
   }
 
+  redirectTo(uri: string) {
+    this.router
+      .navigateByUrl("/", { skipLocationChange: true })
+      .then(() => this.router.navigateByUrl(uri));
+  }
+
   /////////////////////////////////
   ////////// DIALOGS //////////////
   /////////////////////////////////
 
   openEndGameDialog() {
+    this.gameData$.unsubscribe();
     const end = this.dialog.open(EndGameDialogComponent, {
       disableClose: true,
       width: "90%",
@@ -243,14 +262,21 @@ export class GameShellComponent implements OnInit, OnDestroy {
     });
 
     end.afterClosed().subscribe(x => {
-      if (x) {
+      if (x && this.role == "speaker") {
         //play again
-        this.round = null;
-        let emojiList = this.emojiService.getEmojis(200);
+        this.round = 1;
         // resetGame makes: round 1, gets new emojiList, score =0
-        this.gameService.resetGame(this.classroomId, this.gameId, emojiList);
-        this.numberOfExtraEmojis = 0;
-        this.__onPage.next(true);
+        if (this.role === "speaker") {
+          this.gameService
+            .playNextGame(this.classroomId, this.gameId)
+            .then(() => {
+              this.redirectTo(this.router.url);
+            });
+        } else {
+          this.redirectTo(this.router.url);
+        }
+      } else if (x) {
+        this.redirectTo(this.router.url);
       } else {
         //quit
         this.router.navigate(["/"]);
@@ -265,11 +291,15 @@ export class GameShellComponent implements OnInit, OnDestroy {
       width: "90%",
       data: { score: this.score }
     });
-    round.afterClosed().subscribe(x => {
-      this.gameService.goToRound2(this.classroomId, this.gameId).then(() => {
-        console.log(this.role);
-        //this.__onPage.next(true);
-      });
+    round.afterClosed().subscribe(async x => {
+      this.round = 2;
+      this.role = await this.getRole(this.creator);
+      this.gameService.playerReady(
+        this.classroomId,
+        this.gameId,
+        this.currentPuzzle,
+        this.role
+      );
     });
   }
 
@@ -283,7 +313,12 @@ export class GameShellComponent implements OnInit, OnDestroy {
     });
 
     instructions.afterClosed().subscribe(x => {
-      this.__onPage.next(true);
+      this.gameService.playerReady(
+        this.classroomId,
+        this.gameId,
+        this.currentPuzzle,
+        this.role
+      );
     });
   }
 }

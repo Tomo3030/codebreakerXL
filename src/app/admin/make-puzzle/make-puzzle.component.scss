@@ -1,0 +1,36 @@
+.flex {
+  display: flex;
+  justify-content: center;
+}
+
+.grid {
+  width: 500px;
+}
+
+.sticky {
+  position: sticky;
+  top: 100px;
+  text-align: center;
+}
+
+.button {
+  margin: 20px;
+  padding: 7px;
+}
+
+.section {
+  margin: 15px 30px;
+}
+
+.right {
+  width: 400px;
+  //flex-grow: 1;
+}
+
+.back {
+  background-color: #424242;
+}
+
+.card {
+  margin: 20px 0;
+}
